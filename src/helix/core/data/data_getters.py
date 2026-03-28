@@ -2,6 +2,11 @@ import duckdb
 import pandas as pd
 
 
+def get_database():
+    db_path = "/workspaces/helix/mock_data/db/helix.duckdb"
+    db = duckdb.connect(db_path, read_only=False)
+    return db
+
 def get_new_issue() -> pd.DataFrame:
     """
     Retrieve a sample of new issues from the deal pipeline database.
@@ -27,7 +32,6 @@ def get_new_issue() -> pd.DataFrame:
     function repeatedly.
     """
 
-    db_path = "/workspaces/helix/mock_data/deal_pipeline.duckdb"
-    con = duckdb.connect(db_path, read_only=True)
+    con = get_database()
     df = con.execute("SELECT * FROM deal_pipeline LIMIT 10").fetchdf()
     return df

@@ -1,5 +1,5 @@
 {
-  "python.defaultInterpreterPath": "${workspaceFolder}/conda/bin/python",
+  "python.defaultInterpreterPath": "/root/conda/envs/dev/bin/python",
   "python.analysis.extraPaths": [
         "${workspaceFolder}",
         "${workspaceFolder}/src"
