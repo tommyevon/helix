@@ -9,6 +9,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
 
     strategy:
       matrix:
@@ -32,4 +35,35 @@ jobs:
         run: pip install -e ".[dev]"
 
       - name: Run tests
-        run: pytest tests/ -v --cov=src/helix --cov-report=term-missing
+        run: |
+          pytest tests/ -v \
+            --cov=src/helix \
+            --cov-report=term-missing \
+            --cov-report=xml:coverage.xml \
+            --junitxml=test-results.xml
+
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()    # run even if tests fail
+        with:
+          files: test-results.xml
+          check_name: "Test Results (Python ${{ matrix.python-version }})"
+
+      - name: Publish coverage comment on PR
+        uses: MishaKav/pytest-coverage-comment@v1
+        if: github.event_name == 'pull_request'
+        with:
+          pytest-xml-coverage-path: coverage.xml
+          junitxml-path: test-results.xml
+          title: "Coverage Report (Python ${{ matrix.python-version }})"
+          badge-title: Coverage
+          hide-badge: false
+          hide-report: false
+          create-new-comment: false    # updates existing comment rather than spamming new ones
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-${{ matrix.python-version }}
+          path: coverage.xml
+          retention-days: 30
