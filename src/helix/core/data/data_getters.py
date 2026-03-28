@@ -7,6 +7,7 @@ def get_database():
     db = duckdb.connect(db_path, read_only=False)
     return db
 
+
 def get_new_issue() -> pd.DataFrame:
     """
     Retrieve a sample of new issues from the deal pipeline database.

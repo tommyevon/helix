@@ -1,7 +1,7 @@
-import pandas as pd
 import duckdb
-from helix.core.connectors.base import Connector
+import pandas as pd
 
+from helix.core.connectors.base import Connector
 
 MAIN_PATH = "/workspaces/helix/mock_data/db/helix.duckdb"
 

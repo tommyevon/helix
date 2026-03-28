@@ -1,0 +1,18 @@
+[project]
+name = "helix"
+version = "0.1.0"
+dependencies = [
+    "requests>=2.31.0",
+    "duckdb>=1.5.1",
+    "pandas==2.1.4",  # legacy oracle dependency
+    "numpy==1.26.4",  # legacy oracle dependency
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",    # coverage reports
+]
