@@ -1,0 +1,50 @@
+name: Lint
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
+
+      - name: Cache Trunk
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/trunk
+          key: ${{ runner.os }}-trunk-${{ hashFiles('.trunk/trunk.yaml') }}
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]" black isort ruff pylint
+
+      - name: black
+        run: black --check src/
+
+      - name: isort
+        run: isort --check-only src/
+
+      - name: ruff
+        run: ruff check src/
+
+      - name: pylint
+        run: pylint src/

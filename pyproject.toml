@@ -14,5 +14,18 @@ where = ["src"]
 [project.optional-dependencies]
 dev = [
     "pytest",
-    "pytest-cov",    # coverage reports
+    "pytest-cov",
+]
+
+[tool.pylint.main]
+source-roots = ["src"]
+
+[tool.ruff]
+src = ["src"]
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/__init__.py",
 ]
