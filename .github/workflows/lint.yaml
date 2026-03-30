@@ -10,17 +10,13 @@ jobs:
   lint:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        python-version: ["3.11"]
-
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.11"
 
       - name: Cache pip
         uses: actions/cache@v4
@@ -28,23 +24,11 @@ jobs:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
 
-      - name: Cache Trunk
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/trunk
-          key: ${{ runner.os }}-trunk-${{ hashFiles('.trunk/trunk.yaml') }}
+      - name: Install ruff
+        run: pip install ruff==0.4.1
 
-      - name: Install dependencies
-        run: pip install -e ".[dev]" black isort ruff pylint
-
-      - name: black
-        run: black --check src/
-
-      - name: isort
-        run: isort --check-only src/
-
-      - name: ruff
+      - name: ruff lint
         run: ruff check src/
 
-      - name: pylint
-        run: pylint src/
+      - name: ruff format
+        run: ruff format --check src/

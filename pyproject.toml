@@ -15,13 +15,18 @@ where = ["src"]
 dev = [
     "pytest",
     "pytest-cov",
+    "pre-commit",
 ]
-
-[tool.pylint.main]
-source-roots = ["src"]
 
 [tool.ruff]
 src = ["src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
 
 [tool.coverage.run]
 source = ["src"]

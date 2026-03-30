@@ -3,7 +3,6 @@ from typing import Any
 
 
 class Connector(ABC):
-
     @abstractmethod
     def get(self, query: Any, **kwargs) -> Any: ...
 

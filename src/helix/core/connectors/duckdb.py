@@ -7,7 +7,6 @@ MAIN_PATH = "/workspaces/helix/mock_data/db/helix.duckdb"
 
 
 class DuckDB(Connector):
-
     def __init__(self, path: str = MAIN_PATH, read_only: bool = False):
         self._con = duckdb.connect(path, read_only=read_only)
 
