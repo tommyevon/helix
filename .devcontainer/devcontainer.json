@@ -1,21 +1,7 @@
 {
-  "name": "Helix Python Dev Container",
-  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "name": "helix-dev",
+  "image": "tommyevon93/core-dev:latest",
   "features": {
-    "ghcr.io/trunk-io/devcontainer-feature/trunk:1": {}
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1": {}
   },
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "ms-python.python",
-        "ms-python.black-formatter",
-        "ms-python.pylint",
-        "trunk.io"
-      ],
-      "settings": {
-        "python.defaultInterpreterPath": "/usr/local/bin/python"
-      }
-    }
-  },
-  "postCreateCommand": "pip install -r requirements.txt"
 }

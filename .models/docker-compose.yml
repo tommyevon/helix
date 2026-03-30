@@ -1,0 +1,10 @@
+services:
+  mistral:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ollama_data:/root/.ollama
+
+volumes:
+  ollama_data:
