@@ -1,0 +1,37 @@
+# .github/workflows/auto-approve.yml
+name: Auto Approve
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  # Also re-evaluate when check suites complete
+  check_suite:
+    types: [completed]
+
+jobs:
+  auto-approve:
+    runs-on: ubuntu-latest
+
+    if: |
+      contains(
+        fromJSON('["tommyevon", "another-trusted-contributor"]'),
+        github.event.pull_request.user.login
+      )
+
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Wait for tests to pass
+        uses: lewagon/wait-on-check-action@v1.3.4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          check-name: "Tests"          # must match your test workflow job name
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
+
+      - name: Auto approve PR
+        uses: hmarr/auto-approve-action@v4
+        with:
+          github-token: ${{ secrets.BOT_GITHUB_TOKEN }}
+          
